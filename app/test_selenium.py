@@ -31,55 +31,48 @@ try:
 
     #######################################################
 
-    # Aguarda o botão de datas estar presente e clica nele para abrir o calendário
-    WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, "button[data-testid='date-display-field-start']"))
-    ).click()
+    # Esperar até que o botão do calendário esteja visível e clicar
+    calendar_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[data-testid="date-display-field-start"]'))
+    )
+    calendar_button.click()
+
+    time.sleep(2)  # Pequeno delay para garantir que o calendário carregou
 
     # Define a data desejada no formato YYYY-MM-DD
     data_checkin = "2025-03-15"
     data_checkout = "2025-03-20"
 
-    # Aguarda e clica na data de check-in
-    WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, f"td[data-date='{data_checkin}']"))
-    ).click()
+    # Localizar e clicar no botão de seleção de data
+    date_button = driver.find_element(By.CSS_SELECTOR, 'button[data-testid="date-display-field-start"]')
+    date_button.click()
 
-    # Aguarda e clica na data de check-out
-    WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, f"td[data-date='{data_checkout}']"))
-    ).click()
+    # Aguardar um tempo para visualizar a ação (opcional)
+    time.sleep(2)
 
-    time.sleep(3)
+    date_checkin = WebDriverWait(driver, 10).until(
+    EC.element_to_be_clickable(
+        (By.CSS_SELECTOR, f'span[data-date="{data_checkin}"]')
+        )
+    )
+    date_checkin.click()
+    time.sleep(2)
 
-
-    '''
-
-    # Aguarda o calendário aparecer e busca o mês correto
-    while True:
-        mes_atual = driver.find_element(By.CSS_SELECTOR, "div[data-testid='current-month']")
-        
-        if mes_ano_desejado in mes_atual.text:
-            break  # Sai do loop se encontrar o mês certo
-        else:
-            # Avança para o próximo mês
-            driver.find_element(By.CSS_SELECTOR, "button[aria-label='Next month']").click()
-
-    # Aguarda e seleciona o dia desejado dentro do mês correto
-    WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, f"//span[@aria-label='{dia_desejado} {mes_ano_desejado}']"))
-    ).click()
-
-    # Fecha o navegador (caso necessário)
-    # driver.quit()
-    '''
+    date_checkout = WebDriverWait(driver, 10).until(
+    EC.element_to_be_clickable(
+        (By.CSS_SELECTOR, f'span[data-date="{data_checkout}"]')
+        )
+    )
+    date_checkout.click()
+    time.sleep(2)
+    
 
     time.sleep(5)
-    '''
+    
     # Clicar no botão de pesquisa
     search_button = driver.find_element(By.CLASS_NAME, "e4adce92df")
     search_button.click()
-    '''
+    
     time.sleep(5)  # Espera os resultados carregarem
 
 finally:
